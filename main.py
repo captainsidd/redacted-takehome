@@ -19,9 +19,9 @@ def fibonacci_handler(nth_number: int) -> str:
 def ackermann_handler(m_number: int, n_number:int) -> int:
   return klarna.ackermann_handler(m=m_number, n=n_number)
 
-@app.route('/factorial/<int:fibo_nth>')
-def factorial_handler(fibo_nth: int):
-  return klarna.factorial_handler(n=fibo_nth)
+@app.route('/factorial/<int:factorial_nth>')
+def factorial_handler(factorial_nth: int):
+  return klarna.factorial_handler(n=factorial_nth)
 
 @app.route('/_metrics/')
 def metrics_handler():

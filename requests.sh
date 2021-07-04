@@ -1,0 +1,17 @@
+curl localhost:5000/_metrics/
+curl localhost:5000/fibonacci/14546
+curl localhost:5000/fibonacci/1454
+curl localhost:5000/_metrics/
+curl localhost:5000/fibonacci/14546
+curl localhost:5000/fibonacci/14546
+curl localhost:5000/_metrics/
+curl localhost:5000/ackermann/1/2
+curl localhost:5000/ackermann/2/3
+curl localhost:5000/ackermann/3/4
+curl localhost:5000/ackermann/4/0
+curl localhost:5000/ackermann/4/1
+curl localhost:5000/_metrics/
+curl localhost:5000/factorial/4
+curl localhost:5000/factorial/7
+curl localhost:5000/factorial/1262
+curl localhost:5000/_metrics/

@@ -61,7 +61,7 @@ class Klarna():
       self.update_metrics(method="fibonacci", latency=time.time()-latency_start, success=False)
       return "Invalid parameters: `fibonacci` takes in non-negative integers"
     try:
-      result = self.fibonacci(n)
+      result = self.__fibonacci(n)
       self.update_metrics(method="fibonacci", latency=time.time()-latency_start, success=True)
       return str(result)
     except ComputationError:
@@ -72,7 +72,7 @@ class Klarna():
       return "Unknown error for `fibonacci`"
 
 
-  def fibonacci(self, n: int) -> int:
+  def __fibonacci(self, n: int) -> int:
     """
     Implements generation of the nth Fibonacci number for a given n
     Stores all previous Fibonacci numbers generated for optimization reasons
@@ -98,14 +98,14 @@ class Klarna():
     Stores the values of previous calls to reduce resource utilization
     """
     latency_start = time.time()
-    if type(m) is not int or type(n) is not int or m <= 0 or n <= 0:
+    if type(m) is not int or type(n) is not int or m < 0 or n < 0:
       self.update_metrics(method="ackermann", latency=time.time()-latency_start, success=False)
       return "Invalid parameters: `ackermann` takes in non-negative integers"
     try:
       m_n_key =  "{}_{}".format(m, n)
       if m_n_key in self.ackermann_memos:
         return str(self.ackermann_memos[m_n_key])
-      new_memo = self.ackermann_recurse(m, n)
+      new_memo = self.__ackermann_recurse(m, n)
       self.ackermann_memos[m_n_key] = new_memo
       self.update_metrics(method="ackermann", latency=time.time()-latency_start, success=True)
       return str(new_memo)
@@ -117,7 +117,7 @@ class Klarna():
       return "Unknown error for `ackermann`"
 
 
-  def ackermann_recurse(self, m, n):
+  def __ackermann_recurse(self, m, n):
     """
     Ackermann function A(m, n) defined as:
       n + 1               if m = 0
@@ -130,9 +130,9 @@ class Klarna():
       if m == 0:
         return n + 1
       if m > 0 and n == 0:
-        return self.ackermann_recurse(m -1, 1)
+        return self.__ackermann_recurse(m -1, 1)
       if m > 0 and n > 0:
-        return self.ackermann_recurse(m-1, self.ackermann_recurse(m, n-1))
+        return self.__ackermann_recurse(m-1, self.__ackermann_recurse(m, n-1))
     except:
       raise ComputationError
 
@@ -146,7 +146,7 @@ class Klarna():
       self.update_metrics(method="factorial", latency=time.time()-latency_start, success=False)
       return "Invalid parameters: `factorial` takes in non-negative integers"
     try:
-      result = self.factorial(n)
+      result = self.__factorial(n)
       self.update_metrics(method="factorial", latency=time.time()-latency_start, success=True)
       return str(result)
     except ComputationError:
@@ -157,7 +157,7 @@ class Klarna():
       return "Unknown error for `factorial`"
 
 
-  def factorial(self, n: int) -> int:
+  def __factorial(self, n: int) -> int:
     """
     Iteratively computes the nth factorial for the given n
     Raises ComputationError if errors occur
@@ -198,3 +198,36 @@ class Klarna():
     """
     return json.dumps(self.metrics)
 
+
+  def __old_ackermann(self, m, n):
+    """
+    This is an attempt to implement the Ackermann function using dynamic programming.
+    It does not work.
+    """
+    print("Ackermann( {} , {} )".format(m, n))
+    # create a table to store all the values we need from 0 to m and 0 to n
+    table = [[0 for i in range(n+1)] for j in range(m+1)]
+
+    for row in range(m+1):
+      for col in range(n+1):
+        #  n + 1 if m = 0
+        if row == 0:
+          table[row][col] = col + 1
+        # A(m-1, 1) if m > 0 and n == 0
+        elif row > 0 and col == 0:
+          # no need to recurse since we've stored the data of the last row already
+          table[row][col] = table[row-1][1]
+        #  A(m-1, A(m, n-1)) if m > 0 and n > 0
+        elif row > 0 and col > 0:
+          # get new row and col using the value of the cell to the left
+          new_row = row - 1
+          new_col = table[row][col-1]
+          # check if we don't need to recurse
+          if new_row == 0:
+            table[row][col] = new_col + 1
+          elif new_col <= n: # new_col is already in our computed table
+            table[row][col] = table[row-1][new_col]
+          # otherwise we'll need to recurse and generate a new table
+          else:
+            table[row][col] = self.old_ackermann(new_row, new_col)
+    return table[m][n]
