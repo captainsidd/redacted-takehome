@@ -14,7 +14,7 @@ To start the app, run:
 
 `$ FLASK_APP=main.py flask run`
 
-This will start the program on port 5000. A series of sample curl commands to the webserver can be found in `requests.sh`. Alternatively, navigate to the available paths in your browser.
+This will start the program on port 5000:  `localhost:5000`. A series of sample curl commands to the webserver can be found in `requests.sh`. Alternatively, navigate to the available paths in your browser.
 
 
 ### Available Paths
