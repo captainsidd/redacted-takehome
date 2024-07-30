@@ -9,7 +9,7 @@ Class object that implements required fibonacci, ackermann, factorial functions.
 Includes wrapper functions for required functions called by API layer.
 Stores metrics about function executions for observability.
 """
-class Klarna():
+class Server():
 
   def __init__(self):
     # initialize storage for fibonacci numbers

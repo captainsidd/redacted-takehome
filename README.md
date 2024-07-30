@@ -1,4 +1,4 @@
-# Klarna Take Home
+# <Redacted> Take Home
 
 A server implementing Fibonacci, Ackermann, and Factorial functions. Includes monitoring.
 
